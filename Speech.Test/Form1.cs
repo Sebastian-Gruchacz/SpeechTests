@@ -16,11 +16,13 @@ namespace Speech.Test
     {
         private SpeechRecognitionEngine _recognizer;
         readonly SpeechSynthesizer _synthesizer = new SpeechSynthesizer();
+        
 
         public Form1()
         {
             InitializeComponent();
-            
+            var knownVoices = _synthesizer.GetInstalledVoices().ToArray();
+            _synthesizer.SelectVoice("pl-PL");
         }
 
         private bool InitializeEngine()
