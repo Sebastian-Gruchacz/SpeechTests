@@ -15,17 +15,37 @@ namespace Speech.Test
     public partial class Form1 : Form
     {
         private SpeechRecognitionEngine _recognizer;
-        readonly SpeechSynthesizer _synthesizer = new SpeechSynthesizer();
+        private SpeechSynthesizer _synthesizer;
         
 
         public Form1()
         {
             InitializeComponent();
-            var knownVoices = _synthesizer.GetInstalledVoices().ToArray();
-            _synthesizer.SelectVoice("pl-PL");
         }
 
-        private bool InitializeEngine()
+        private bool InitializeSpeechEngine()
+        {
+            _synthesizer = new SpeechSynthesizer();
+            var knownVoices = _synthesizer.GetInstalledVoices().ToArray();
+            var plVoice = knownVoices.SingleOrDefault(v => v.VoiceInfo.Culture.Name == "pl-PL");
+            if (plVoice == null)
+            {
+                if (_synthesizer.Voice.Culture.Parent != null &&
+                    _synthesizer.Voice.Culture.Parent.Name == "en")
+                {
+                    _synthesizer.Speak("Polish version of text-to-speech not found or activated.");
+                }
+                else
+                {
+                    PlayInvalidSpeechEngineFailureWav();
+                }
+                return false;
+            }
+            
+            return true;
+        }
+
+        private bool InitializeSpeechRecognitionEngine()
         {
             var engines = System.Speech.Recognition.SpeechRecognitionEngine.InstalledRecognizers();
             if (engines.Count == 0)
@@ -69,19 +89,30 @@ namespace Speech.Test
             }
             else if (e.Result.Grammar.Name == "welcome")
             {
-                button1.PerformClick();
+                HelloWorld();
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
+            HelloWorld();
+        }
+
+        private void HelloWorld()
+        {
             _synthesizer.Speak("A teraz komputerek przemawia do ciebie!");
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            if (!InitializeEngine())
+            if (!InitializeSpeechEngine())
+            {
+                PlayAppCloseWav();
+                this.Close();
+                Application.Exit();
+                return;
+            }
+            if (!InitializeSpeechRecognitionEngine())
             {
                 _synthesizer.Speak("Zamykam program.");
                 this.Close();
@@ -89,6 +120,16 @@ namespace Speech.Test
                 return;
             }
             _recognizer?.RecognizeAsync(RecognizeMode.Multiple);
+        }
+
+        private void PlayAppCloseWav()
+        {
+            // TODO: implement
+        }
+
+        private void PlayInvalidSpeechEngineFailureWav()
+        {
+            // TODO: implement
         }
 
         private Grammar CreateColorGrammar()
