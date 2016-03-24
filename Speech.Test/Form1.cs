@@ -33,7 +33,7 @@ namespace Speech.Test
                 if (_synthesizer.Voice.Culture.Parent != null &&
                     _synthesizer.Voice.Culture.Parent.Name == "en")
                 {
-                    _synthesizer.Speak("Polish version of text-to-speech not found or activated.");
+                    _synthesizer.Speak("Required Polish version of 'text to speech' was not found or activated in your system.");
                 }
                 else
                 {
