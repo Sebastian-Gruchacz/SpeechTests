@@ -19,10 +19,6 @@ namespace Demo1
             var a2 = a1.Clone();
             Console.WriteLine(a2.IsNew);
 
-            // p.skibinski2@gmail.com
-
-            
-
         }
     }
 }
