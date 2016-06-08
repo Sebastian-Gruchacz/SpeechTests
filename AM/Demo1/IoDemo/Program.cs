@@ -14,7 +14,7 @@ namespace IoDemo
         {
             var sourceFileBuilder = new PathBuilder(@"WikiSample.xml");
             //Console.WriteLine(sourceFileBuilder.GetFullPath());
-            var reader = new SimpleFileReading(sourceFileBuilder.GetFullPath());
+            //var reader = new SimpleFileReading(sourceFileBuilder.GetFullPath());
 
             Console.OutputEncoding = Encoding.UTF8;
             //Console.WriteLine(reader.ReadAll());
@@ -22,11 +22,19 @@ namespace IoDemo
             //int a, b;
             //Console.WriteLine(a = b = 3);
 
-            PrintXmlSerializationDemo();
+            //PrintXmlSerializationDemo();
+            WikiPageReader wrdr = new WikiPageReader();
+
+            using (var sr = new FileStream(sourceFileBuilder.GetFullPath(), FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                var model = wrdr.ReadModel(sr);
+
+                Console.WriteLine(model.Title);
+            }
 
 
 #if DEBUG
-            Console.WriteLine();
+                Console.WriteLine();
             Console.WriteLine("Press ENTER");
             Console.ReadLine();
 #endif
