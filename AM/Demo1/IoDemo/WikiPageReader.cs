@@ -58,7 +58,15 @@ namespace IoDemo
                     }
                     case "SPIS":
                     {
-// ...
+                        foreach (var schildNode in el.SelectNodes("element_spisu"))
+                        {
+                            XmlElement ell = schildNode as XmlElement;
+                            if (ell == null)
+                                continue;
+
+                            var element = new WikiIndexItem(int.Parse(ell.GetAttribute("id")), ell.GetAttribute("tytul"));
+                            page.Index.Add(element.Id, element);
+                        }
                         break;
                     }
                     case "SEKCJE":

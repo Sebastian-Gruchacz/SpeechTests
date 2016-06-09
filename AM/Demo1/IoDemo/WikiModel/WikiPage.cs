@@ -12,10 +12,13 @@ namespace IoDemo.WikiModel
 
             Title = title;
             Sections = new SortedDictionary<int, WikiSection>();
+            Index = new SortedDictionary<int, WikiIndexItem>();
         }
 
         public string Title { get; set; }
 
         public SortedDictionary<int, WikiSection> Sections { get; private set; }
+
+        public SortedDictionary<int, WikiIndexItem> Index { get; private set; }
     }
 }

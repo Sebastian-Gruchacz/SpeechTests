@@ -30,6 +30,10 @@ namespace IoDemo
                 var model = wrdr.ReadModel(sr);
 
                 Console.WriteLine(model.Title);
+
+                Console.WriteLine(model.Index[5].Title);
+
+                var spis = model.Index.Values.OrderBy(i => i.Id).ToArray();
             }
 
 
